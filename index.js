@@ -16,7 +16,9 @@ app.get("/", (req, res) => {
 
 // Setting socket io connection and events
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("A user connected ", socket.handshake.query.username);
+
+  socket.broadcast.emit("userJoined", socket.handshake.query.username) // Emiting event when user joined
 
   // When user leave the window
   socket.on("disconnect", () => {
@@ -39,5 +41,5 @@ io.on("connection", (socket) => {
   });
 });
 
-// Listening
+// Listening on PORT 3000
 server.listen(3000, () => console.log("App is up and running on port 3000"));
